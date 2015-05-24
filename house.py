@@ -22,7 +22,7 @@ import transformers
 
 def load_df(file, price_needed=True):
     ''' Load csv file as a pandas dataframe and clean it up '''
-    df = pd.read_csv('data_sci_snippet.csv')
+    df = pd.read_csv(file)
     if price_needed:
         # remove rows with no ClosePrice
         df = df[df['ClosePrice'].notnull()]
@@ -74,7 +74,7 @@ def build_pipeline(num_vars, cat_vars, geo_vars, txt_vars):
         ('text_selector', transformers.ColumnSelectTransformer(txt_vars)), 
         # convert to list of strings
         ('text_transformer', transformers.ListTransformer()),
-        # imputate missing values (some LivingArea values are NaN)
+        # extract TF-IDF normalized featueres
         ('vectorizer', feature_extraction.text.TfidfVectorizer(
             stop_words='english', min_df=.0001, max_df=.5)),
     ])
